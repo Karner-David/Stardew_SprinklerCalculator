@@ -1,3 +1,7 @@
+html {
+  font-family:'Times New Roman', Times, serif;
+}
+
 li {
   list-style-type: none;
 }
@@ -5,7 +9,7 @@ li {
 li button a {
   text-decoration: none;
   color: white;
-  font-size: 20px;
+  font-size: 12px;
   background-color: blue;
 }
 
@@ -29,8 +33,38 @@ button {
   padding: 10px;
 }
 
+a {
+  text-decoration: none;
+  color: red;
+}
+
 .farm-type-button {
   background-color: orange;
   color: white;
   font-size: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.ham-menu {
+  position: relative; /* Direct parent of dropdown should be relative */
+  width: 100%; /* Optional: adjust as needed */
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%; /* Position right below the button */
+  width: 100%; /* Match the width of .ham-menu if desired */
+  background-color: white;
+  display: none;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.nav-visible .dropdown {
+  display: block;
+  background-color: red;
 }
