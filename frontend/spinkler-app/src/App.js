@@ -1,10 +1,13 @@
 import './App.css';
-import NavBar from './components/nav-bar';
+import SDVLogo from './images/SDVLogo.png';
+
 
 function App() {
   return (
     <main>
-      <NavBar />
+      <a href="/" className="title">
+        <picture><img src={SDVLogo} className="sdv-logo" alt="" /></picture>Stardew Valley Sprinkler Placement
+      </a>
     </main>
   );
 }
