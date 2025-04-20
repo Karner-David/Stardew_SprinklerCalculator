@@ -1,0 +1,40 @@
+.map-container {
+    width: 50vm;
+    height: 70vh;
+}
+
+.tiled-map {
+    height: 100%;
+    width: 100%;
+    background: 
+        /* Vertical Lines */
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 4px,
+            rgba(0, 0, 0, 1) 5px
+        ),
+        /* Horizontal Lines */
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 4px,
+            rgba(0, 0, 0, 1) 5px
+        ),
+        /* Background image at the bottom */
+        var(--bg-image, url(../../images/riverlandtestmap.jpeg)) no-repeat center/cover;
+}
+
+#selection-overlay {
+    position: absolute;
+    pointer-events: none;
+    border: 2px solid green;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.selected-overlay {
+    position: absolute;
+    pointer-events: auto; /* So locked overlays don't interfere with hovering */
+}
+
