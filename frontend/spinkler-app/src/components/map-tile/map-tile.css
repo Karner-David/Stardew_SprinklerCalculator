@@ -1,25 +1,25 @@
 .map-container {
-    width: 50vm;
+    width: 40vw;
     height: 70vh;
 }
 
 .tiled-map {
-    height: 100%;
-    width: 100%;
+    height: 140%;
+    width: 140%;
     background: 
         /* Vertical Lines */
         repeating-linear-gradient(
             90deg,
             transparent,
-            transparent 4px,
-            rgba(0, 0, 0, 1) 5px
+            transparent 19px,
+            rgba(0, 0, 0, 1) 20px
         ),
         /* Horizontal Lines */
         repeating-linear-gradient(
             0deg,
             transparent,
-            transparent 4px,
-            rgba(0, 0, 0, 1) 5px
+            transparent 19px,
+            rgba(0, 0, 0, 1) 20px
         ),
         /* Background image at the bottom */
         var(--bg-image, url(../../images/riverlandtestmap.jpeg)) no-repeat center/cover;

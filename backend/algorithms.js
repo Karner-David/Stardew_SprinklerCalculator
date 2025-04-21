@@ -9,6 +9,7 @@
  * @param {number} dimH - size of sprinkler height dim
  */
 function findBestSprinklerSpots(tileMap, dimW, dimH) {
+    console.log('In findBestSprinklerSpots');
     initSprinklerPlacement(tileMap, dimW, dimH);
     handleGaps(tileMap, dimW, dimH);
 }
@@ -20,6 +21,7 @@ function findBestSprinklerSpots(tileMap, dimW, dimH) {
  * @param {number} dimH - size of sprinkler height dim
  */
 function initSprinklerPlacement(tileMap, dimW, dimH) {
+    console.log('In initSprinkler');
     let i = 0;
     while (i < tileMap.length) {
         let j = 0;
@@ -46,6 +48,7 @@ function initSprinklerPlacement(tileMap, dimW, dimH) {
  * @return {number} - returns col with invalid, or -1 if no presence of invalid
  */
 function checkPrescenceOfInvalid(tileMap, startCol, startRow, dimW, dimH) {
+    console.log('In checkPrescenceOfInvalid');
     if (startCol + dimW - 1 >= tileMap[0].length) return tileMap[0].length;
     if (startRow + dimH - 1 >= tileMap.length) return tileMap.length;
 
@@ -68,6 +71,7 @@ function checkPrescenceOfInvalid(tileMap, startCol, startRow, dimW, dimH) {
  * @param {number} dimH - size of sprinkler height dim
  */
 function fillInAround(tileMap, centerRow, centerCol, dimW, dimH) {
+    console.log('In fillInAround');
     const rowOffset = Math.trunc(dimH / 2);
     const colOffset = Math.trunc(dimW / 2);
     let row1 = Math.max(0, centerRow - rowOffset);
@@ -94,6 +98,7 @@ function fillInAround(tileMap, centerRow, centerCol, dimW, dimH) {
  * @param {number} dimH - size of sprinkler height dim
  */
 function handleGaps(tileMap, dimW, dimH) {
+    console.log('In handleGaps');
     const countTable = getNumOpenTable(tileMap, dimW, dimH);
     for (let row = 0; row < tileMap.length; row++) {
         for (let col = 0; col < tileMap[0].length; col++) {
@@ -111,6 +116,7 @@ function handleGaps(tileMap, dimW, dimH) {
  * @return {Array<Array<number>>} - 2d array of count of open spots around each cell
  */
 function makePrefixSumTable(tileMap) {
+    console.log('In makePrefixSumTable');
     const totalRows = tileMap.length;
     const totalCols = tileMap[0].length;
 
@@ -135,6 +141,7 @@ function makePrefixSumTable(tileMap) {
  * @return {Array<Array<number>>} - table of count of open spots around a cell
  */
 function getNumOpenTable(tileMap, dimW, dimH) {
+    console.log('In getNumOpenTable');
     const rowOffset = Math.trunc(dimH / 2);
     const colOffset = Math.trunc(dimW / 2);
     const prefixSumTable = makePrefixSumTable(tileMap);
@@ -170,6 +177,7 @@ function getNumOpenTable(tileMap, dimW, dimH) {
  * @return {Array<number>} - coordinates of cell with the most open spots
  */
 function getPlaceWithMostOpenSpots(countTable, startRow, startCol, dimW, dimH) {
+    console.log('In getPlaceWithMostOpenSpots');
     let bestRow = -1;
     let bestCol = -1;
     let bestCount = -1;

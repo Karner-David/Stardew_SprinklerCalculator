@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ToggleModeButton from '../toggle-mode-button/ToggleModeButton';
 import deleteImg from '../../images/trashcan.png'
+import SubmitButton from '../submit-button/submit-button';
 import './map-tile.css';
 // import { urlencoded } from 'express';
 
@@ -44,8 +45,8 @@ function MapTile({ filePath }) {
         return grid;
       };
 
-    const tileWidth = 5;
-    const tileHeight = 5;
+    const tileWidth = 20;
+    const tileHeight = 20;
     const offsetY = 4 * tileHeight;
 
     let chosenRows = 25;
@@ -75,7 +76,7 @@ function MapTile({ filePath }) {
             const overlayWidth = chosenCols * tileWidth;
             const overlayHeight = chosenRows * tileHeight;
             const overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
-            const overlayY = snapToGrid(mouseY - overlayHeight / 2 + offsetY, tileHeight);
+            const overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 5;
 
             selection.style.width = overlayWidth + 'px';
             selection.style.height = overlayHeight + 'px';
@@ -100,7 +101,7 @@ function MapTile({ filePath }) {
             const overlayWidth = chosenCols * tileWidth;
             const overlayHeight = chosenRows * tileHeight;
             const overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
-            const overlayY = snapToGrid(mouseY - overlayHeight / 2 + offsetY, tileHeight);
+            const overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 5;
 
             setSelections((prev) => [
                 ...prev,
@@ -139,6 +140,23 @@ function MapTile({ filePath }) {
         setSelections((prev) => prev.filter(sel => sel.id !== id));
     }
 
+    const handleSubmit = async () => {
+        const grid = getGridArray();
+        console.log('Pressed submit');
+        try {
+            const resp = await fetch('http://localhost:4000/api/submitGrid', {
+                method: 'POST',
+                headers: { 'Content-Type' : 'application/json' },
+                body: JSON.stringify({ grid })
+            });
+            if (!resp.ok) throw new Error(await resp.text());
+            alert('Grid sent successfully');
+        } catch (e) {
+            console.error(e);
+            alert('Error sending grid' + e);
+        }
+    }
+
     return (
         <div className='map-container'>
             <div className="tiled-map" ref={containerRef} style={backgroundImg}>
@@ -164,7 +182,8 @@ function MapTile({ filePath }) {
                     ></div>
                 ))}
             </div>
-            <ToggleModeButton mode={mode} toggleFunction={() => setMode(mode === "select" ? "delete" : "select")}></ToggleModeButton>
+            <ToggleModeButton mode={mode} toggleFunction={() => setMode(mode === "select" ? "delete" : "select")}/>
+            <SubmitButton submitFunction={handleSubmit}/>
         </div>
     )
 }

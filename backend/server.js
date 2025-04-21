@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors    = require('cors');
 const { findBestSprinklerSpots } = require('./algorithms');
 require('dotenv').config();
 
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 
@@ -12,22 +14,24 @@ app.get('/', (req, res) => {
     res.send('Hello from the backend!');
 })
 
-app.post('/processTileMap', (req, res) => {
+app.post('/api/submitGrid/', (req, res) => {
     try {
-        const { tileMap, dimW, dimH } = req.body;
-
-        if (!Array.isArray(tileMap) || typeof dimW !== 'number' || typeof dimH !== 'number') {
-            return res.status(400).json({ error: 'Invalid input format'});
+        const tileMap = req.body.grid;
+        const dimW = req.body.dimW || 3;
+        const dimH = req.body.dimH || 3;
+        
+        if (!Array.isArray(tileMap) || !tileMap.length) {
+            return res.status(400).json({ error: 'Invalid or missing grid'});
         }
 
         findBestSprinklerSpots(tileMap, dimW, dimH);
 
-        res.json({ tileMap })
-    } catch (error) {
-        console.error('Error processing tile map:', error);
-        res.status(500).json({ error: 'Internal server error'});
+        res.json({ result: tileMap})
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({error: e.message});
     }
-})
+});
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
