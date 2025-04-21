@@ -1,5 +1,6 @@
 html {
   font-family:'Times New Roman', Times, serif;
+  background-color: rgb(238, 238, 238);
 }
 
 .sdv-logo {
@@ -9,15 +10,14 @@ html {
 }
 
 .title {
-  background-color: aqua;
+  background-color: rgb(43, 73, 174);
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
   padding: 10px;
-}
-
-a {
   text-decoration: none;
-  color: red;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
 }
