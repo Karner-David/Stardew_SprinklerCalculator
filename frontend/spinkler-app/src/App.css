@@ -1,6 +1,9 @@
-html {
-  font-family:'Times New Roman', Times, serif;
+html, body {
   background-color: rgb(238, 238, 238);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .sdv-logo {
@@ -20,4 +23,25 @@ html {
   color: white;
   font-size: 20px;
   font-weight: bold;
+}
+
+.content {
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+  width: 100%;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+@font-face {
+  font-family: "Nunito";
+  font-weight: 400;
+  font-style: normal;
+  src: url(/public/fonts/Nunito-VariableFont_wght.ttf);
 }

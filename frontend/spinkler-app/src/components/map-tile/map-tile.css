@@ -1,11 +1,13 @@
 .map-container {
-    width: 40vw;
-    height: 70vh;
+    flex: 1; /* Take up all remaining space next to Aside */
+    height: 100%;
+    overflow-y: auto; /* Allow vertical scroll */
+    position: relative;
 }
 
 .tiled-map {
-    height: 140%;
-    width: 140%;
+    min-height: 100vh; /* At least as tall as the screen */
+    width: 100%;
     background: 
         /* Vertical Lines */
         repeating-linear-gradient(
