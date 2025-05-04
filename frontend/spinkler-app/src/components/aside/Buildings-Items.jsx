@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function BuildingItem({ name, images, text }) {
+export default function BuildingItem({ name, images, text, onClick }) {
     const [index, setIndex] = useState(0);
   
     const prev = () => {
@@ -27,6 +27,7 @@ export default function BuildingItem({ name, images, text }) {
     const buildingStyle = {
       display: 'block',
       background: 'transparent',
+      cursor: 'pointer',
     };
   
     const arrowStyle = {
@@ -51,7 +52,7 @@ export default function BuildingItem({ name, images, text }) {
               <button onClick={prev} style={arrowStyle}>&larr;</button>
             )}
       
-            <picture style={buildingStyle}>
+            <picture onClick={onClick} style={buildingStyle}>
               <img
                 src={images[index]}
                 className="building-image"

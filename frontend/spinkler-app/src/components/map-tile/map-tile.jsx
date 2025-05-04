@@ -2,10 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import ToggleModeButton from '../toggle-mode-button/ToggleModeButton';
 import deleteImg from '../../images/trashcan.png'
 import SubmitButton from '../submit-button/submit-button';
+import QualSprink from '../../images/sprinklers/quality_sprinkler_13x13.png';
 import './map-tile.css';
 // import { urlencoded } from 'express';
 
-function MapTile({ filePath }) {
+function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
     const backgroundImg = {
         '--bg-image': `url(${filePath})`
     };
@@ -45,16 +46,14 @@ function MapTile({ filePath }) {
         return grid;
       };
 
-    const tileWidth = 20;
-    const tileHeight = 20;
+    const tileWidth = 13;
+    const tileHeight = 13;
     const offsetY = 4 * tileHeight;
-
-    let chosenRows = 25;
-    let chosenCols = 25;
 
     const containerRef = useRef(null);
     const selectionRef = useRef(null);
     const [selections, setSelections] = useState([]);
+    const [sprinklers, setSprinklers] = useState([])
 
     const [mode, setMode] = useState('select')
     const snapToGrid = (value, gridSize) => Math.floor(value / gridSize) * gridSize;
@@ -62,6 +61,8 @@ function MapTile({ filePath }) {
     useEffect(() => {
         const container = containerRef.current;
         const selection = selectionRef.current;
+        selection.style.left = '0px';
+        selection.style.top  = '0px';
 
         if (!container || !selection) return;
 
@@ -75,16 +76,20 @@ function MapTile({ filePath }) {
 
             const overlayWidth = chosenCols * tileWidth;
             const overlayHeight = chosenRows * tileHeight;
-            const overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
-            const overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 5;
+            let overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
+            let overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 3;
 
-            selection.style.width = overlayWidth + 'px';
-            selection.style.height = overlayHeight + 'px';
-            selection.style.left = overlayX + 'px';
-            selection.style.top = overlayY + 'px';
-            selection.style.display = 'block';
-            selection.style.backgroundColor = 'transparent';
-            selection.style.border = '2px solid green';    
+            overlayX = Math.max(0, Math.min(overlayX, container.clientWidth  - overlayWidth));
+            overlayY = Math.max(0, Math.min(overlayY, container.clientHeight - overlayHeight));
+
+            Object.assign(selection.style, {
+                width:  `${overlayWidth}px`,
+                height: `${overlayHeight}px`,
+                transform: `translate(${overlayX}px, ${overlayY}px)`,
+                display: 'block',
+                backgroundColor: 'transparent',
+                border: '2px solid green'
+              });
         }
 
         const handleMouseLeave = () => {
@@ -94,23 +99,25 @@ function MapTile({ filePath }) {
         const handleClick = (e) => {
             if (mode !== 'select') return;
             if (e.target !== container) return;
-            const rect = container.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            const { left, top } = container.getBoundingClientRect();
+            const mouseX = e.clientX - left;
+            const mouseY = e.clientY - top;
 
             const overlayWidth = chosenCols * tileWidth;
             const overlayHeight = chosenRows * tileHeight;
-            const overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
-            const overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 5;
+            let overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
+            let overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 3;
 
+            overlayX = Math.max(0, Math.min(overlayX, container.clientWidth  - overlayWidth));
+            overlayY = Math.max(0, Math.min(overlayY, container.clientHeight - overlayHeight));
             setSelections((prev) => [
                 ...prev,
                 {
                     id: Date.now(),
                     left: overlayX,
                     top: overlayY,
-                    width: chosenCols * tileWidth,
-                    height: chosenRows * tileHeight
+                    width: overlayWidth,
+                    height: overlayHeight
                 }
             ]);
         };
@@ -147,9 +154,18 @@ function MapTile({ filePath }) {
             const resp = await fetch('http://localhost:4000/api/submitGrid', {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
-                body: JSON.stringify({ grid })
+                body: JSON.stringify({ grid, map: currentMap })
             });
             if (!resp.ok) throw new Error(await resp.text());
+            const { result } = await resp.json();
+            const coords = [];
+            result.forEach((row, r) =>
+            row.forEach((cell, c) => {
+                if (cell === 'S') coords.push({ r, c });
+            })
+            );
+            setSprinklers(coords);
+            console.table(result);
             alert('Grid sent successfully');
         } catch (e) {
             console.error(e);
@@ -159,28 +175,45 @@ function MapTile({ filePath }) {
 
     return (
         <div className='map-container'>
-            <div className="tiled-map" ref={containerRef} style={backgroundImg}>
-                <div id="selection-overlay" ref={selectionRef}></div>
-                {selections.map((sel) => (
-                    <div
-                        key={sel.id}
-                        className="selected-overlay"
+            <div className="image-container">
+                <div className="tiled-map" ref={containerRef} style={backgroundImg}>
+                    <div id="selection-overlay" ref={selectionRef}></div>
+                    {selections.map((sel) => (
+                        <div
+                            key={sel.id}
+                            className="selected-overlay"
+                            style={{
+                                left: sel.left + 'px',
+                                top: sel.top + 'px',
+                                width: sel.width + 'px',
+                                height: sel.height + 'px',
+                                backgroundColor: 'rgba(0, 128, 0, 0.3)',
+                                position: 'absolute'
+                            }}
+                            onClick={(e) => {
+                            if (mode === "delete") {
+                                // Prevent the container's click event from firing
+                                handleDelete(sel.id, e);
+                            }
+                            }}
+                        ></div>
+                    ))}
+                    {sprinklers.map((s, i) => (
+                        <img
+                        key={i}
+                        src={QualSprink}           /* tiny 13×13 sprinkler image */
+                        alt="sprinkler"
                         style={{
-                            left: sel.left + 'px',
-                            top: sel.top + 'px',
-                            width: sel.width + 'px',
-                            height: sel.height + 'px',
-                            backgroundColor: 'rgba(0, 128, 0, 0.3)',
-                            position: 'absolute'
+                            position: 'absolute',
+                            left:  s.c * tileWidth  + 'px',
+                            top:   s.r * tileHeight - 3 + 'px',
+                            width:  tileWidth  + 'px',
+                            height: tileHeight + 'px',
+                            pointerEvents: 'none'  /* so it never blocks clicks */
                         }}
-                        onClick={(e) => {
-                        if (mode === "delete") {
-                            // Prevent the container's click event from firing
-                            handleDelete(sel.id, e);
-                        }
-                        }}
-                    ></div>
-                ))}
+                        />
+                    ))}
+                </div>
             </div>
             <ToggleModeButton mode={mode} toggleFunction={() => setMode(mode === "select" ? "delete" : "select")}/>
             <SubmitButton submitFunction={handleSubmit}/>

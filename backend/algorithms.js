@@ -8,35 +8,69 @@
  * @param {number} dimW - size of sprinkler width dim
  * @param {number} dimH - size of sprinkler height dim
  */
-function findBestSprinklerSpots(tileMap, dimW, dimH) {
-    console.log('In findBestSprinklerSpots');
+function findBestSprinklerSpots(tileMap, dimW, dimH, curMap) {
+    if (process.env.DEBUG) {
+        console.log('In findBestSprinklerSpots');
+        console.log(tileMap);
+        console.log(tileMap.length);
+        console.log(tileMap[0].length);
+    }
+    
     initSprinklerPlacement(tileMap, dimW, dimH);
     handleGaps(tileMap, dimW, dimH);
 }
 
-/**
- * Puts the initial first few sprinklers into the 2d array
- * @param {Array<Array<string>>} tileMap - 2d array of characters
- * @param {number} dimW - size of sprinkler width dim
- * @param {number} dimH - size of sprinkler height dim
- */
 function initSprinklerPlacement(tileMap, dimW, dimH) {
-    console.log('In initSprinkler');
-    let i = 0;
-    while (i < tileMap.length) {
-        let j = 0;
-        while (j < tileMap[0].length) {
-            const invalidCol = checkPrescenceOfInvalid(tileMap, j, i, dimW, dimH);
-            if (invalidCol === -1) {
-                fillInArround(tileMap, i + dimH / 2, j + dimW / 2, dimW, dimH);
-                j += dimW;
-            } else {
-                j = invalidCol + 1;
-            }
+    if (process.env.DEBUG) console.log('In initSprinkler');
+    const R = tileMap.length;        // total rows
+    const C = tileMap[0].length;     // total columns
+
+    const lastStartRow = R - dimH;   // highest top‑left row that still fits
+    const lastStartCol = C - dimW;   // highest top‑left col that still fits
+
+    const halfR = dimH >> 1;         // same as Math.floor(dimH / 2)
+    const halfC = dimW >> 1;
+
+    const blockedPS = makeBlockedPSTable(tileMap); // the prefix‑sum matrix
+
+    // try every possible top‑left corner that keeps the w×h window inside the map
+    for (let r = 0; r <= lastStartRow; r += dimH) {
+        for (let c = 0; c <= lastStartCol; ) {
+
+        // rectangle [r, c] .. [r+dimH-1, c+dimW-1]
+        if (!hasBlock(blockedPS, r, c, r + dimH - 1, c + dimW - 1)) {
+            // place a sprinkler in the centre of that rectangle
+            fillInAround(tileMap, r + halfR, c + halfC, dimW, dimH);
+            c += dimW;                // skip an entire sprinkler width
+        } else {
+            c += 1;                   // slide one cell and test again
         }
-        i++;
+        }
     }
 }
+
+function makeBlockedPSTable(map) {
+    const R = map.length, C = map[0].length;
+    const ps = Array.from({ length: R + 1 }, () => Array(C + 1).fill(0));
+    for (let r = 1; r <= R; r++) {
+      for (let c = 1; c <= C; c++) {
+        const blocked = map[r - 1][c - 1] === '.' ? 0 : 1;
+        ps[r][c] =
+          blocked +
+          ps[r - 1][c] + ps[r][c - 1] - ps[r - 1][c - 1];
+      }
+    }
+    return ps;
+  }
+  /** O(1) query: any blocked tile in rectangle? */
+  function hasBlock(ps, r1, c1, r2, c2) {
+    return (
+      ps[r2 + 1][c2 + 1] -
+      ps[r1][c2 + 1] -
+      ps[r2 + 1][c1] +
+      ps[r1][c1]
+    ) !== 0;
+  }
 
 /**
  * Checks if there is an invalid element within the dimensions
@@ -48,13 +82,13 @@ function initSprinklerPlacement(tileMap, dimW, dimH) {
  * @return {number} - returns col with invalid, or -1 if no presence of invalid
  */
 function checkPrescenceOfInvalid(tileMap, startCol, startRow, dimW, dimH) {
-    console.log('In checkPrescenceOfInvalid');
+    // if (process.env.DEBUG) console.log('In checkPrescenceOfInvalid');
     if (startCol + dimW - 1 >= tileMap[0].length) return tileMap[0].length;
     if (startRow + dimH - 1 >= tileMap.length) return tileMap.length;
 
     for (let col = startCol + dimW - 1; col >= startCol; col--) {
         for (let row = startRow; row < startRow + dimH; row++) {
-            if (tileMap[row][col] !== ',') {
+            if (tileMap[row][col] !== '.') {
                 return col
             }
         }
@@ -71,7 +105,7 @@ function checkPrescenceOfInvalid(tileMap, startCol, startRow, dimW, dimH) {
  * @param {number} dimH - size of sprinkler height dim
  */
 function fillInAround(tileMap, centerRow, centerCol, dimW, dimH) {
-    console.log('In fillInAround');
+    // if (process.env.DEBUG) console.log('In fillInAround');
     const rowOffset = Math.trunc(dimH / 2);
     const colOffset = Math.trunc(dimW / 2);
     let row1 = Math.max(0, centerRow - rowOffset);
@@ -90,23 +124,50 @@ function fillInAround(tileMap, centerRow, centerCol, dimW, dimH) {
     }
 }
 
-// Handle Filling in gaps
-/**
- * Main function for handling remaining gaps
- * @param {Array<Array<string>>} tileMap - 2d array of characters
- * @param {number} dimW - size of sprinkler width dim
- * @param {number} dimH - size of sprinkler height dim
- */
-function handleGaps(tileMap, dimW, dimH) {
-    console.log('In handleGaps');
-    const countTable = getNumOpenTable(tileMap, dimW, dimH);
-    for (let row = 0; row < tileMap.length; row++) {
-        for (let col = 0; col < tileMap[0].length; col++) {
-            if (tileMap[row][col] === '.') {
-                const bestPlace = getPlaceWithMostOpenSpots(countTable, row, col, dimW, dimH);
-                if (countTable[bestPlace[0]][bestPlace[1]] > 1) fillInAround(tileMap, bestPlace[0], bestPlace[1], dimW, dimH);
-            }
+/** simple binary max‑heap */
+class MaxHeap {
+    constructor() { this.a = []; }
+    push(x) {        // x = {r,c,val}
+        let i = this.a.push(x) - 1;
+        while (i && this.a[(i - 1) >> 1].val < this.a[i].val) {
+        [this.a[i], this.a[(i - 1) >> 1]] = [this.a[(i - 1) >> 1], this.a[i]];
+        i = (i - 1) >> 1;
         }
+    }
+    pop() {
+        if (!this.a.length) return null;
+        const top = this.a[0];
+        const last = this.a.pop();
+        if (this.a.length) {
+        this.a[0] = last;
+        let i = 0;
+        while (true) {
+            let l = i * 2 + 1, r = l + 1, big = i;
+            if (l < this.a.length && this.a[l].val > this.a[big].val) big = l;
+            if (r < this.a.length && this.a[r].val > this.a[big].val) big = r;
+            if (big === i) break;
+            [this.a[i], this.a[big]] = [this.a[big], this.a[i]];
+            i = big;
+        }
+        }
+        return top;
+    }
+}
+  
+function handleGaps(map, w, h) {
+    const counts = getNumOpenTable(map, w, h);
+    const heap = new MaxHeap();
+    for (let r = 0; r < map.length; r++)
+        for (let c = 0; c < map[0].length; c++)
+        if (map[r][c] === '.' && counts[r][c] > 1)
+            heap.push({ r, c, val: counts[r][c] });
+
+    while (true) {
+        const best = heap.pop();
+        if (!best) break;
+        const { r, c } = best;
+        if (map[r][c] !== '.') continue;       // filled by earlier sprinkler
+        fillInAround(map, r, c, w, h);
     }
 }
 
@@ -116,7 +177,7 @@ function handleGaps(tileMap, dimW, dimH) {
  * @return {Array<Array<number>>} - 2d array of count of open spots around each cell
  */
 function makePrefixSumTable(tileMap) {
-    console.log('In makePrefixSumTable');
+    if (process.env.DEBUG) console.log('In makePrefixSumTable');
     const totalRows = tileMap.length;
     const totalCols = tileMap[0].length;
 
@@ -141,7 +202,7 @@ function makePrefixSumTable(tileMap) {
  * @return {Array<Array<number>>} - table of count of open spots around a cell
  */
 function getNumOpenTable(tileMap, dimW, dimH) {
-    console.log('In getNumOpenTable');
+    if (process.env.DEBUG) console.log('In getNumOpenTable');
     const rowOffset = Math.trunc(dimH / 2);
     const colOffset = Math.trunc(dimW / 2);
     const prefixSumTable = makePrefixSumTable(tileMap);
@@ -165,34 +226,6 @@ function getNumOpenTable(tileMap, dimW, dimH) {
         }
     }
     return countTable;
-}
-
-/**
- * Get the cell with the most open spot neighbors 
- * @param {Array<Array<numberam} countTable - table with the count of open spots around a cell
- * @param {number} startRow -amtarting row coordinate to look from
- * @param {number} startCol - starting col coordinate to look from
- * @param {number} dimW - sizamof sprinkler width dim
- * @param {number} dimH - size of sprinkler height dim
- * @return {Array<number>} - coordinates of cell with the most open spots
- */
-function getPlaceWithMostOpenSpots(countTable, startRow, startCol, dimW, dimH) {
-    console.log('In getPlaceWithMostOpenSpots');
-    let bestRow = -1;
-    let bestCol = -1;
-    let bestCount = -1;
-    let boundRow = Math.min(countTable.length, startRow + dimH);
-    let boundCol = Math.min(countTable[0].length, startCol + dimW);
-    for (let row = startRow; row < boundRow; row++) {
-        for (let col = startCol; col < boundCol; col++) {
-            if (countTable[row][col] > bestCount) {
-                bestRow = row;
-                bestCol = col;
-                bestCount = countTable[row][col];
-            }
-        }
-    }
-    return [bestRow, bestCol];
 }
 
 module.exports = {

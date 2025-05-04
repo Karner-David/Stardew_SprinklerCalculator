@@ -19,12 +19,13 @@ app.post('/api/submitGrid/', (req, res) => {
         const tileMap = req.body.grid;
         const dimW = req.body.dimW || 3;
         const dimH = req.body.dimH || 3;
+        const curMap = req.body.map;
         
         if (!Array.isArray(tileMap) || !tileMap.length) {
             return res.status(400).json({ error: 'Invalid or missing grid'});
         }
 
-        findBestSprinklerSpots(tileMap, dimW, dimH);
+        const result = findBestSprinklerSpots(tileMap, dimW, dimH, curMap);
 
         res.json({ result: tileMap})
     } catch (e) {

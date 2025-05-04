@@ -1,30 +1,48 @@
 .map-container {
     flex: 1; /* Take up all remaining space next to Aside */
-    height: 100%;
+    height: 100vh;
+    width: 50vw;
     overflow-y: auto; /* Allow vertical scroll */
     position: relative;
 }
 
+.image-container {
+    height: 90%;
+    width: 99%;
+}
+
 .tiled-map {
-    min-height: 100vh; /* At least as tall as the screen */
-    width: 100%;
+    position: relative;
+    height: 98%;
+    width: 71%;
+    margin: 0 auto;
+    /* min-height: 100vh; At least as tall as the screen */
+    /* width: 79.5%; */
     background: 
         /* Vertical Lines */
         repeating-linear-gradient(
             90deg,
             transparent,
-            transparent 19px,
-            rgba(0, 0, 0, 1) 20px
+            transparent 12px,
+            rgba(0, 0, 0, 1) 13px
         ),
         /* Horizontal Lines */
         repeating-linear-gradient(
             0deg,
             transparent,
-            transparent 19px,
-            rgba(0, 0, 0, 1) 20px
+            transparent 12px,
+            rgba(0, 0, 0, 1) 13px
         ),
         /* Background image at the bottom */
-        var(--bg-image, url(../../images/riverlandtestmap.jpeg)) no-repeat center/cover;
+        var(--bg-image, url(../../images/riverlandtestmap.jpeg));
+    background-repeat: repeat, repeat, no-repeat;
+
+    /* top‑left for lines, photo centred */
+    background-position: 0 0, 0 0, center center;
+    
+    /* auto for the two gradients (default),  ⟶ “contain” for the photo layer */
+    background-size: auto, auto, contain;
+    overflow: hidden;
 }
 
 #selection-overlay {

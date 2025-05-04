@@ -3,7 +3,7 @@ import AsideButton from "./Aside-button";
 import AsideContentFarm from "./Aside-Content-Farm";
 import AsideContentBuildings from "./Aside-Content-Buildings";
 
-export default function Aside({ onMapChange }) {
+export default function Aside({ onMapChange, onSizeChange }) {
   const [activeTab, setActiveTab] = useState('tab1');
 
   return (
@@ -19,7 +19,7 @@ export default function Aside({ onMapChange }) {
       <aside>
         <AsideButton activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {activeTab === 'tab1' && <AsideContentBuildings />}
+        {activeTab === 'tab1' && <AsideContentBuildings onSizeChange={onSizeChange} />}
         {activeTab === 'tab2' && <AsideContentFarm onMapChange={onMapChange} />}
       </aside>
     </div>

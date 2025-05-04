@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SDVLogo from './images/SDVLogo.png';
 import Aside from './components/aside/Aside';
 import MapTile from './components/map-tile/map-tile.jsx'
+import Content from './components/content.jsx';
 import Wilderness from './images/Wilderness-No-Builds.svg'
 
 function App() {
@@ -14,10 +15,7 @@ function App() {
         <picture><img src={SDVLogo} className="sdv-logo" alt="" /></picture>Stardew Valley Sprinkler Placement
       </a>
 
-      <div className='content'>
-        <MapTile filePath={ currentMapPath } />
-        <Aside onMapChange={setCurrentMapPath} />
-      </div>
+      <Content/>
     </main>
   );
 }

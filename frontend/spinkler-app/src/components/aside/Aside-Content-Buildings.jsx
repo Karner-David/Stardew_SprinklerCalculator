@@ -17,60 +17,71 @@ import Slime from '../../images/buildings/Slime_Hutch.png'
 import Horse from '../../images/buildings/Horse_Stable.png'
 import Well from '../../images/buildings/Well.png'
 
-export default function AsideContentBuildings() {
+export default function AsideContentBuildings({onSizeChange}) {
   const buildings = [
     {
       name: 'Barn',
+      rows: 4, cols: 7,
       images: [Barn1, Barn2, Barn3],
       text: ['Barn', 'Big Barn', 'Deluxe Barn']
     },
     {
       name: 'Cabin',
+      rows: 3, cols: 5,
       images: [Cabin1],
       text: ['Cabin'],
     },
     {
       name: 'Coop',
+      rows: 3, cols: 6,
       images: [Coop1, Coop2, Coop3],
       text: ['Coop', 'Big Coop', 'Deluxe Coop'],
     },
     {
       name: 'FishPond',
+      rows: 5, cols: 5,
       images: [FishPond],
       text: ['Fish Pond'],
     },
     {
       name: 'Mill',
+      rows: 2, cols: 4,
       images: [Mill],
       text: ['Mill'],
     },
     {
       name: 'PetBowl',
+      rows: 2, cols: 2,
       images: [PetBowl],
       text: ['Pet Bowl'],
     },
     {
       name: 'Shed',
+      rows: 3, cols: 7,
       images: [Shed1, Shed2],
       text: ['Shed', 'Big Shed']
     },
     {
       name: 'Silo',
+      rows: 3, cols: 3,
       images: [Silo],
       text: ['Silo'],
     },
     {
       name: 'Slime',
+      rows: 4, cols: 7,
       images: [Slime],
       text: ['Slime Hutch'],
     },
     {
       name: 'Horse',
+      rows: 2, cols: 4,
       images: [Horse],
       text: ['Horse Stable'],
     },
     {
       name: 'Well',
+      rows: 3, cols: 3,
       images: [Well],
       text: ['Well'],
     },
@@ -94,6 +105,7 @@ export default function AsideContentBuildings() {
           name={b.name}
           images={b.images}
           text={b.text}
+          onClick={() => onSizeChange({ rows: b.rows, cols: b.cols })}
         />
       ))}
     </div>
