@@ -8,6 +8,7 @@ export default function Aside({ onMapChange, onSizeChange }) {
 
   return (
     <div style={{
+      display: 'fixed',
       height: '100%',
       width: '450px',
       backgroundColor: '#ffffff',

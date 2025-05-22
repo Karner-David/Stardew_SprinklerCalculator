@@ -11,7 +11,7 @@ export default function AsideButton({ activeTab, setActiveTab }) {
     backgroundColor: 'transparent',
     border: 'none',
     borderBottom: '2px solid transparent',
-    fontSize: '16px',
+    fontSize: '25px',
     cursor: 'pointer',
     transition: 'all 0.2s ease-in-out'
   };

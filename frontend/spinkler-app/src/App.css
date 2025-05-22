@@ -8,8 +8,8 @@ html, body {
 
 .sdv-logo {
   display: block;
-  max-width: 30px;
-  max-height: 30px;
+  max-width: 40px;
+  max-height: 40px;
 }
 
 .title {
@@ -21,7 +21,7 @@ html, body {
   padding: 10px;
   text-decoration: none;
   color: white;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
 }
 

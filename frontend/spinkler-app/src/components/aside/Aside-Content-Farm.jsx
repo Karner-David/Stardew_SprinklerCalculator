@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const maps = [
   {
     name: "Standard Farm",
-    icon: "/icons/standard-icon.png",
+    icon: "/icons/Standard_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/standard-all.svg",
       house: "/maps/standard-house.svg",
@@ -13,7 +13,7 @@ const maps = [
   },
   {
     name: "Riverland Farm",
-    icon: "/icons/riverland-icon.png",
+    icon: "/icons/Riverland_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/riverland-all.svg",
       house: "/maps/riverland-house.svg",
@@ -23,7 +23,7 @@ const maps = [
   },
   {
     name: "Forest Farm",
-    icon: "/icons/forest-icon.png",
+    icon: "/icons/Forest_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/forest-all.svg",
       house: "/maps/forest-house.svg",
@@ -33,7 +33,7 @@ const maps = [
   },
   {
     name: "Hilltop Farm",
-    icon: "/icons/hilltop-icon.png",
+    icon: "/icons/Hilltop_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/hilltop-all.svg",
       house: "/maps/hilltop-house.svg",
@@ -43,7 +43,7 @@ const maps = [
   },
   {
     name: "Wilderness Farm",
-    icon: "/icons/wilderness-icon.png",
+    icon: "/icons/Wilderness_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/wilderness-all.svg",
       house: "/maps/wilderness-house.svg",
@@ -53,7 +53,7 @@ const maps = [
   },
   {
     name: "Four Corners Farm",
-    icon: "/icons/fourcorners-icon.png",
+    icon: "/icons/Four_Corners_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/fourcorners-all.svg",
       house: "/maps/fourcorners-house.svg",
@@ -63,7 +63,7 @@ const maps = [
   },
   {
     name: "Beach Farm",
-    icon: "/icons/beach-icon.png",
+    icon: "/icons/Beach_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/beach-all.svg",
       house: "/maps/beach-house.svg",
@@ -73,7 +73,7 @@ const maps = [
   },
   {
     name: "Meadowlands Farm",
-    icon: "/icons/meadowlands-icon.png",
+    icon: "/icons/Meadowlands_Farm_Map_Icon.png",
     baseImages: {
       all: "/maps/meadowlands-all.svg",
       house: "/maps/meadowlands-house.svg",
@@ -109,7 +109,7 @@ const maps = [
     return (
       <div style={{ padding: '10px' }}>
         {/* Checklist Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px', fontSize: '20px' }}>
           <label style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <input
               type="checkbox"
@@ -143,10 +143,11 @@ const maps = [
                 marginBottom: '10px',
                 backgroundColor: farm.name === selectedFarm.name ? '#f0f0f0' : 'transparent',
                 padding: '5px',
-                borderRadius: '4px'
+                borderRadius: '4px',
+                fontSize: '20px',
               }}
             >
-              <img src={farm.icon} alt={farm.name} style={{ width: '30px', height: '30px', marginRight: '10px' }} />
+              <img src={farm.icon} alt={farm.name} style={{ width: '60px', height: '60px', marginRight: '10px' }} />
               <span>{farm.name}</span>
             </div>
           ))}

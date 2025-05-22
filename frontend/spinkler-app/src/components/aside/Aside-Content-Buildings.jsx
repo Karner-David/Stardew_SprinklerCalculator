@@ -91,12 +91,10 @@ export default function AsideContentBuildings({onSizeChange}) {
     <div
       className="buildings"
       style={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'fixed',
         alignItems: 'center',
-        gap: '30px',
         paddingBottom: '50px',
-        maxWidth: 'auto'
+        maxWidth: 'auto',
       }}
     >
       {buildings.map((b, i) => (
@@ -106,6 +104,7 @@ export default function AsideContentBuildings({onSizeChange}) {
           images={b.images}
           text={b.text}
           onClick={() => onSizeChange({ rows: b.rows, cols: b.cols })}
+          imageWidth="300px"
         />
       ))}
     </div>

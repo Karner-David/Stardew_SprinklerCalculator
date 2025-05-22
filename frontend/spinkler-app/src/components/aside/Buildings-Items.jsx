@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function BuildingItem({ name, images, text, onClick }) {
+export default function BuildingItem({ name, images, text, onClick, imageWidth }) {
     const [index, setIndex] = useState(0);
   
     const prev = () => {
@@ -40,7 +40,7 @@ export default function BuildingItem({ name, images, text, onClick }) {
     };
   
     const captionStyle = {
-      fontSize: '14px',
+      fontSize: '18px',
       color: '#555',
       textAlign: 'center'
     };
@@ -57,6 +57,7 @@ export default function BuildingItem({ name, images, text, onClick }) {
                 src={images[index]}
                 className="building-image"
                 alt={`${name} version`}
+                style={{ maxWidth: imageWidth, maxHeight: '340px' }}
               />
             </picture>
       

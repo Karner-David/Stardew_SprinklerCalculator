@@ -176,6 +176,8 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
     return (
         <div className='map-container'>
             <div className="image-container">
+                <ToggleModeButton mode={mode} toggleFunction={() => setMode(mode === "select" ? "delete" : "select")}/>
+                <SubmitButton submitFunction={handleSubmit}/>
                 <div className="tiled-map" ref={containerRef} style={backgroundImg}>
                     <div id="selection-overlay" ref={selectionRef}></div>
                     {selections.map((sel) => (
@@ -215,8 +217,6 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
                     ))}
                 </div>
             </div>
-            <ToggleModeButton mode={mode} toggleFunction={() => setMode(mode === "select" ? "delete" : "select")}/>
-            <SubmitButton submitFunction={handleSubmit}/>
         </div>
     )
 }

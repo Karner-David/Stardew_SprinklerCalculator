@@ -4,7 +4,7 @@ import './submit-button.css';
 export default function SubmitButton({submitFunction}) {
 
     return (
-        <button onClick={submitFunction}>
+        <button className='submit-button' onClick={submitFunction}>
             Submit Grid
         </button>
     )
