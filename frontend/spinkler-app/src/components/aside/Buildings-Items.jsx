@@ -31,7 +31,7 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
     };
   
     const arrowStyle = {
-      fontSize: '20px',
+      fontSize: '50px',
       cursor: 'pointer',
       userSelect: 'none',
       background: 'none',
@@ -40,16 +40,18 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
     };
   
     const captionStyle = {
-      fontSize: '18px',
-      color: '#555',
-      textAlign: 'center'
+      fontSize: '36px',
+      color: 'black',
+      textAlign: 'center',
+      fontFamily: 'Svthin',
+      paddingBottom: '30px'
     };
   
     return (
         <div style={wrapperStyle}>
           <div style={rowStyle}>
             {images.length > 1 && (
-              <button onClick={prev} style={arrowStyle}>&larr;</button>
+              <button onClick={prev} style={arrowStyle}>&lt;-</button>
             )}
       
             <picture onClick={onClick} style={buildingStyle}>
@@ -62,7 +64,7 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
             </picture>
       
             {images.length > 1 && (
-              <button onClick={next} style={arrowStyle}>&rarr;</button>
+              <button onClick={next} style={arrowStyle}>-&gt;</button>
             )}
           </div>
       

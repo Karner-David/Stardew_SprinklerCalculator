@@ -8,7 +8,7 @@ export default function AsideContent({ activeTab }) {
                 padding: '16px',
                 height: '100%',
                 boxSizing: 'border-box',
-                overflowY: 'auto'
+                overflowY: 'auto',
             }
         }>
 

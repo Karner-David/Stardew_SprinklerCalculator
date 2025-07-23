@@ -11,16 +11,16 @@ export default function AsideButton({ activeTab, setActiveTab }) {
     backgroundColor: 'transparent',
     border: 'none',
     borderBottom: '2px solid transparent',
-    fontSize: '25px',
+    fontSize: '32px',
     cursor: 'pointer',
-    transition: 'all 0.2s ease-in-out'
+    transition: 'all 0.2s ease-in-out',
+    fontFamily: 'Svbold'
   };
 
   const activeStyle = {
-    fontWeight: 'bold',
     borderBottom: '1px solid rgba(0, 0, 0, 0.11)',
-    color: 'rgb(43, 73, 174)',
-    backgroundColor: '#ffffff'
+    color: '#be3e15',
+    backgroundColor: 'transparent'
   };
 
   const tab1Style = activeTab === 'tab1' ? Object.assign({}, baseButtonStyle, activeStyle) : baseButtonStyle;

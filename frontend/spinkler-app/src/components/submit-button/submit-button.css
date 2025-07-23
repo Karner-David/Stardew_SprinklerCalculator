@@ -1,12 +1,14 @@
 .submit-button {
     position: absolute;
-    width: 100px;
-    height: 25px;
-    top: 53px;
+    width: 170px;
+    height: 60px;
+    top: 75px;
     margin: 5px;
     right: 5px;
-    border: 1px solid grey;
-    background-color: rgb(203, 201, 201);
-    border-radius: 8px;
+    border: 3px solid #5b2b2a;
+    background-color: #fa9305;
+    border-radius: 4px;
     cursor: pointer;
+    font-family: 'Svthin';
+    font-size: 30px;
 }

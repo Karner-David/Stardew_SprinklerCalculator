@@ -1,28 +1,30 @@
 .button-bg {
     position: absolute;
-    width: 175px;
-    height: 40px;
+    width: 255px;
+    height: 60px;
     margin: 5px;
     right: 5px;
-    border: 1px solid grey;
-    background-color: rgb(203, 201, 201);
-    border-radius: 15px;
+    border: 3px solid #5b2b2a;
+    background-color: #fa9305;
+    border-radius: 4px;
     cursor: pointer;
+    z-index: 1;
   }
   
   .button-label {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 18px;
+    font-size: 30px;
     color: black;    
     pointer-events: none;
+    font-family: 'Svthin';
   }
   
   .left-label {
     left: 11.5px;
   }
-  
+
   .right-label {
     right: 11.5px;
   }
@@ -32,25 +34,25 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    width: 80px;
-    height: 30px;
-    left: 11.5px;
-    top: 5px;
-    border-radius: 9px;
+    width: 127px;
+    height: 60px;
     background-color: green;
     text-align: center;
     line-height: 20px;
-    font-size: 18px;
-    color: white;
+    font-size: 30px;
+    font-family: 'Svthin';
     transition: transform 0.3s ease, background-color 0.3s ease;
+    left: -2px;
   }
   
   .button-select.select {
     transform: translateX(0);
-    background-color: #498F2B;
+    background-color: #eba52d;
+    border: 3px solid #5b2b2a;
   }
   
   .button-select.delete {
-    transform: translateX(72px);
-    background-color: #980934;
+    transform: translateX(128px);
+    background-color: #eba52d;
+    border: 3px solid #5b2b2a;
   }
