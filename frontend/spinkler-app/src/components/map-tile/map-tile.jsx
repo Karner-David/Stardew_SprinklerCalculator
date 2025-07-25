@@ -7,12 +7,21 @@ import './map-tile.css';
 // import { urlencoded } from 'express';
 
 function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
-    const backgroundImg = {
-        '--bg-image': `url(${filePath})`
-    };
 
     const deleteSelection = {
         '--cursor-image': `url(${deleteImg})`    
+    }
+
+    const mapStyle = () => {
+        const map = currentMap.substring(6);
+        let width = '71%';
+        if (map.startsWith('beach') || map.startsWith('fourcorners')) {
+            width = '58%'
+        }
+        return {
+            width: width,
+            '--bg-image': `url(${filePath})`,
+        }
     }
 
     const getGridArray = () => {
@@ -76,8 +85,8 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
 
             const overlayWidth = chosenCols * tileWidth;
             const overlayHeight = chosenRows * tileHeight;
-            let overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
-            let overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 3;
+            let overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth) - 0.5;
+            let overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) + 8;
 
             overlayX = Math.max(0, Math.min(overlayX, container.clientWidth  - overlayWidth));
             overlayY = Math.max(0, Math.min(overlayY, container.clientHeight - overlayHeight));
@@ -88,7 +97,7 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
                 transform: `translate(${overlayX}px, ${overlayY}px)`,
                 display: 'block',
                 backgroundColor: 'transparent',
-                border: '2px solid green'
+                border: '3px solid green'
               });
         }
 
@@ -105,8 +114,8 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
 
             const overlayWidth = chosenCols * tileWidth;
             const overlayHeight = chosenRows * tileHeight;
-            let overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth);
-            let overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) - 3;
+            let overlayX = snapToGrid(mouseX - overlayWidth / 2, tileWidth) - 0.5;
+            let overlayY = snapToGrid(mouseY - overlayHeight / 2, tileHeight) + 8;
 
             overlayX = Math.max(0, Math.min(overlayX, container.clientWidth  - overlayWidth));
             overlayY = Math.max(0, Math.min(overlayY, container.clientHeight - overlayHeight));
@@ -178,7 +187,7 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
             <div className="image-container">
                 <ToggleModeButton mode={mode} toggleFunction={() => setMode(mode === "select" ? "delete" : "select")}/>
                 <SubmitButton submitFunction={handleSubmit}/>
-                <div className="tiled-map" ref={containerRef} style={backgroundImg}>
+                <div className="tiled-map" ref={containerRef} style={mapStyle()}>
                     <div id="selection-overlay" ref={selectionRef}></div>
                     {selections.map((sel) => (
                         <div

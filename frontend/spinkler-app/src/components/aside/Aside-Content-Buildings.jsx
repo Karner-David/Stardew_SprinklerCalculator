@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import BuildingItem from './Buildings-Items';
 import Barn1 from '../../images/buildings/Barn.png'
 import Barn2 from '../../images/buildings/Big_Barn.png'
@@ -18,6 +18,8 @@ import Horse from '../../images/buildings/Horse_Stable.png'
 import Well from '../../images/buildings/Well.png'
 
 export default function AsideContentBuildings({onSizeChange}) {
+const [activeBuilding, setActiveBuilding] = useState('');
+
   const buildings = [
     {
       name: 'Barn',
@@ -103,8 +105,9 @@ export default function AsideContentBuildings({onSizeChange}) {
           name={b.name}
           images={b.images}
           text={b.text}
-          onClick={() => onSizeChange({ rows: b.rows, cols: b.cols })}
+          onClick={() => {onSizeChange({ rows: b.rows, cols: b.cols }); setActiveBuilding(b.name);}}
           imageWidth="300px"
+          active={activeBuilding === b.name}
         />
       ))}
     </div>

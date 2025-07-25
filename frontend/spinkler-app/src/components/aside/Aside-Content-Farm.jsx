@@ -242,7 +242,7 @@ export default function AsideContentFarm({ onMapChange }) {
               alignItems: 'center',
               cursor: 'pointer',
               marginBottom: '10px',
-              backgroundColor: '#f7b870',
+              backgroundColor: farm.name === selectedFarm.name ? '#f3c38dff' : '#f7b870',
               padding: '8px',
               borderRadius: '4px',
               fontSize: '35px',
@@ -251,7 +251,7 @@ export default function AsideContentFarm({ onMapChange }) {
               fontFamily: 'Svthin'
             }}
           >
-            <img src={farm.icon} alt={farm.name} style={{ width: '60px', height: '60px', marginRight: '10px' }} />
+            <img src={farm.icon} alt={farm.name} style={{ width: '60px', height: '60px', marginRight: '10px'}} />
             <span>{farm.name}</span>
           </div>
         ))}

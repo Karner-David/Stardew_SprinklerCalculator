@@ -4,7 +4,7 @@ import Aside from './aside/Aside';
 
 function Content({ initialMapPath }) {
     const [currentMapPath, setCurrentMapPath] = useState("/maps/standard-all.svg");
-    const [selectedDims, setSelectedDims] = useState({rows: 25, cols: 25});
+    const [selectedDims, setSelectedDims] = useState({rows: 0, cols: 0});
 
     return (
         <div className="content">

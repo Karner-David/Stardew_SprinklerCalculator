@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function BuildingItem({ name, images, text, onClick, imageWidth }) {
+export default function BuildingItem({ name, images, text, onClick, imageWidth, active }) {
     const [index, setIndex] = useState(0);
   
     const prev = () => {
@@ -15,7 +15,11 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '8px'
+      gap: '8px',
+      border: active ? '2px solid #e90000ff' : '',
+      borderRadius: '8px',
+      margin: '10px',
+      paddingTop: '15px',
     };
   
     const rowStyle = {
@@ -31,6 +35,7 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
     };
   
     const arrowStyle = {
+      fontFamily: 'Svbold',
       fontSize: '50px',
       cursor: 'pointer',
       userSelect: 'none',
@@ -51,7 +56,7 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
         <div style={wrapperStyle}>
           <div style={rowStyle}>
             {images.length > 1 && (
-              <button onClick={prev} style={arrowStyle}>&lt;-</button>
+              <button onClick={prev} style={arrowStyle}>&lt;</button>
             )}
       
             <picture onClick={onClick} style={buildingStyle}>
@@ -64,7 +69,7 @@ export default function BuildingItem({ name, images, text, onClick, imageWidth }
             </picture>
       
             {images.length > 1 && (
-              <button onClick={next} style={arrowStyle}>-&gt;</button>
+              <button onClick={next} style={arrowStyle}>&gt;</button>
             )}
           </div>
       

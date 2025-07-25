@@ -1,21 +1,23 @@
 .map-container {
     flex: 1; /* Take up all remaining space next to Aside */
     height: 100vh;
-    width: 50vw;
-    overflow-y: auto; /* Allow vertical scroll */
+    width: 60vw;
+    /* overflow-y: auto; Allow vertical scroll */
     position: relative;
 }
 
 .image-container {
-    height: 90%;
-    width: 99%;
+    height: 99%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .tiled-map {
     position: relative;
-    height: 98%;
-    width: 71%;
-    margin: 0 auto;
+    height: 89%;
+    width: 58%;
+    margin: 2.5vh auto;
     /* min-height: 100vh; At least as tall as the screen */
     /* width: 79.5%; */
     background: 
