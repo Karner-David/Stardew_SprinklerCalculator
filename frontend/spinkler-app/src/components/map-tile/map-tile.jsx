@@ -160,7 +160,7 @@ function MapTile({ filePath, chosenRows, chosenCols, currentMap }) {
         const grid = getGridArray();
         console.log('Pressed submit');
         try {
-            const resp = await fetch('http://localhost:4000/api/submitGrid', {
+            const resp = await fetch(`${process.env.REACT_APP_API_URL}/api/submitGrid`, {
                 method: 'POST',
                 headers: { 'Content-Type' : 'application/json' },
                 body: JSON.stringify({ grid, map: currentMap })
