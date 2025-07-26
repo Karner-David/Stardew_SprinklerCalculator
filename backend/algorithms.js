@@ -1,3 +1,4 @@
+const { mapPresets } = require('./mapPresets');   // ← CommonJS import
 /**
  * Algorithms to determine best sprinkler spots
  */
@@ -15,9 +16,19 @@ function findBestSprinklerSpots(tileMap, dimW, dimH, curMap) {
         console.log(tileMap.length);
         console.log(tileMap[0].length);
     }
-    
+    applyPresetMask(tileMap, mapPresets["standard_all"]);
     initSprinklerPlacement(tileMap, dimW, dimH);
     handleGaps(tileMap, dimW, dimH);
+    handleGaps(tileMap, dimW, dimH);
+}
+
+function applyPresetMask(grid, preset) {
+    if (!preset) return;
+    for (let row = 0; row < grid.length; row++) {
+        for (let col = 0; col < grid[0].length; col++) {
+          if (preset[row][col] === 'X') grid[row][col] = 'X';
+        }
+      }
 }
 
 function initSprinklerPlacement(tileMap, dimW, dimH) {
@@ -155,6 +166,7 @@ class MaxHeap {
 }
   
 function handleGaps(map, w, h) {
+    const totalArea = w * h;
     const counts = getNumOpenTable(map, w, h);
     const heap = new MaxHeap();
     for (let r = 0; r < map.length; r++)
@@ -166,10 +178,20 @@ function handleGaps(map, w, h) {
         const best = heap.pop();
         if (!best) break;
         const { r, c } = best;
-        if (map[r][c] !== '.') continue;       // filled by earlier sprinkler
-        fillInAround(map, r, c, w, h);
+        if (map[r][c] === '.' && !windowHasCoverage(map, r - (h >> 1), c - (w >> 1), h, w)) {
+           fillInAround(map, r, c, w, h);
+        }
     }
 }
+
+function windowHasCoverage(map, r, c, h, w) {
+    for (let rr = r; rr < r + h; rr++) {
+      for (let cc = c; cc < c + w; cc++) {
+        if (map[rr][cc] === '*' || map[rr][cc] === 'S') return true;
+      }
+    }
+    return false;
+  }
 
 /**
  * Make a prefix sum table to make getting counts for each spot O(1)
