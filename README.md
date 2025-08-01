@@ -1,5 +1,7 @@
 # Stardew_SprinklerCalculator
 
+https://stardew-sprinkler-calculator.vercel.app/
+
 ## To Do List:
 - Fix sprinkler algorithm because currently it bugs a little and not optimizing
 - add map presets that put an X on the spots where the user can't build on already
